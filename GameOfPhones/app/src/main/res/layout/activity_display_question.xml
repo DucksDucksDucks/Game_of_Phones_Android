@@ -10,19 +10,19 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/string_enter_t_id" />
+        android:text="@string/string_q_window" />
 
-    <EditText
-        android:layout_width="fill_parent"
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/deviceID"
+        android:text="" />
+
+    <TextView
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/teacherID"
-        android:hint="Ask your professor for this ID"/>
+        android:text="" />
 
-    <Button
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/Nickname"
-        android:id="@+id/submit"
-        android:onClick="sendMessage"/>
 
 </LinearLayout>

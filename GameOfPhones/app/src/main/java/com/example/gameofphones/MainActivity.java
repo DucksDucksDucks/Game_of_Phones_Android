@@ -15,7 +15,7 @@ import java.util.concurrent.ExecutionException;
 
 public class MainActivity extends AppCompatActivity {
 
-    public int deviceID;
+   static public int deviceID;
     private String message;
     private JSONObject jsonObject;
     private JSONArray jsonArray;
@@ -57,5 +57,9 @@ public class MainActivity extends AppCompatActivity {
         }
         catch (JSONException e){e.printStackTrace();}
         return -1;
+    }
+
+    static public int getDeviceID(){
+        return deviceID;
     }
 }

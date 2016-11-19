@@ -32,11 +32,11 @@ public class BackgroundTask extends AsyncTask<String, Void, String> {
     private Context context;
 
     private String create_id_url;
+    private String check_id_url;
 
     private String nickname;
-    private String movie_num;
+    private String teacherID;
     private String result_json_string;
-    private String video_num, video_in_date, mNum;
 
 
     public BackgroundTask(Context context) {
@@ -47,6 +47,7 @@ public class BackgroundTask extends AsyncTask<String, Void, String> {
     @Override
     protected void onPreExecute() {
         create_id_url = "http://mcs.drury.edu/amerritt/createDeviceID.php";
+        check_id_url = "http://mcs.drury.edu/amerritt/isTeacherIDSet.php";
     }
 
     @Override
@@ -61,6 +62,37 @@ public class BackgroundTask extends AsyncTask<String, Void, String> {
             try {
                 bufferedWriter = getBufferedWriter(create_id_url);
                 data_string = URLEncoder.encode("nickname", "UTF-8") + "=" + URLEncoder.encode(nickname, "UTF-8");
+                bufferedWriter.write(data_string);
+                bufferedWriter.flush();
+                bufferedWriter.close();
+                outputStream.close();
+
+                //check response
+                inputStream = httpURLConnection.getInputStream();
+                bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+                result_json_string = readJSONToString(bufferedReader);
+
+                bufferedReader.close();
+                inputStream.close();
+                httpURLConnection.disconnect();
+
+
+                return result_json_string;
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        else if (method.equals("checkID")) {
+
+            teacherID = params[1];
+
+
+            try {
+                bufferedWriter = getBufferedWriter(check_id_url);
+                data_string = URLEncoder.encode("deviceID", "UTF-8") + "=" + URLEncoder.encode(teacherID, "UTF-8");
                 bufferedWriter.write(data_string);
                 bufferedWriter.flush();
                 bufferedWriter.close();

@@ -5,4 +5,5 @@
     <string name="string_enter_name">Enter a nickname</string>
     <string name="Nickname">Submit</string>
     <string name="string_enter_t_id">Enter Teacher ID</string>
+    <string name="string_q_window">Welcome to the Question activity</string>
 </resources>
