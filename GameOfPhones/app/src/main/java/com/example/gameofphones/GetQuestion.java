@@ -80,13 +80,17 @@ public class GetQuestion extends AppCompatActivity {
             jsonArray = jsonObject.getJSONArray("question_info");
 
             JSONObject JO = jsonArray.getJSONObject(0);
+            Object theObject = JO.get("q_id");
 
 
 
-            if (JO.get("q_id") == null){
+            if (theObject.equals(null)){
+
                 return false;
             }
-            else {return true;}
+            else {
+
+                return true;}
         }
         catch (JSONException e){e.printStackTrace();}
 

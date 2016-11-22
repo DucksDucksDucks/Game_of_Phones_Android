@@ -33,10 +33,16 @@ public class BackgroundTask extends AsyncTask<String, Void, String> {
 
     private String create_id_url;
     private String check_id_url;
+    private String get_question_url;
+    private String get_answers_url;
+    private String submit_answer_url;
 
     private String nickname;
     private String teacherID;
+    private String deviceID;
+    private String questionID;
     private String result_json_string;
+    private String qID, phoneID, answerID;
 
 
     public BackgroundTask(Context context) {
@@ -48,6 +54,9 @@ public class BackgroundTask extends AsyncTask<String, Void, String> {
     protected void onPreExecute() {
         create_id_url = "http://mcs.drury.edu/amerritt/createDeviceID.php";
         check_id_url = "http://mcs.drury.edu/amerritt/isTeacherIDSet.php";
+        get_question_url = "http://mcs.drury.edu/amerritt/getQuestion.php";
+        get_answers_url = "http://mcs.drury.edu/amerritt/getQuestionAnswers.php";
+        submit_answer_url = "http://mcs.drury.edu/amerritt/sendAnswer.php";
     }
 
     @Override
@@ -115,6 +124,104 @@ public class BackgroundTask extends AsyncTask<String, Void, String> {
                 e.printStackTrace();
             }
         }
+
+         else if (method.equals("getQuestion")) {
+
+             deviceID = params[1];
+
+
+             try {
+                 bufferedWriter = getBufferedWriter(get_question_url);
+                 data_string = URLEncoder.encode("deviceID", "UTF-8") + "=" + URLEncoder.encode(deviceID, "UTF-8");
+                 bufferedWriter.write(data_string);
+                 bufferedWriter.flush();
+                 bufferedWriter.close();
+                 outputStream.close();
+
+                 //check response
+                 inputStream = httpURLConnection.getInputStream();
+                 bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+                 result_json_string = readJSONToString(bufferedReader);
+
+                 bufferedReader.close();
+                 inputStream.close();
+                 httpURLConnection.disconnect();
+
+
+                 return result_json_string;
+             } catch (MalformedURLException e) {
+                 e.printStackTrace();
+             } catch (IOException e) {
+                 e.printStackTrace();
+             }
+         }
+
+         else if (method.equals("getAnswers")) {
+
+             questionID = params[1];
+
+
+
+             try {
+                 bufferedWriter = getBufferedWriter(get_answers_url);
+                 data_string = URLEncoder.encode("questionID", "UTF-8") + "=" + URLEncoder.encode(questionID, "UTF-8");
+                 bufferedWriter.write(data_string);
+                 bufferedWriter.flush();
+                 bufferedWriter.close();
+                 outputStream.close();
+
+                 //check response
+                 inputStream = httpURLConnection.getInputStream();
+                 bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+                 result_json_string = readJSONToString(bufferedReader);
+
+                 bufferedReader.close();
+                 inputStream.close();
+                 httpURLConnection.disconnect();
+
+
+                 return result_json_string;
+             } catch (MalformedURLException e) {
+                 e.printStackTrace();
+             } catch (IOException e) {
+                 e.printStackTrace();
+             }
+         }
+
+         else if (method.equals("submitAnswer")) {
+
+             qID = params[1];
+             phoneID = params[2];
+             answerID = params[3];
+             System.out.println("Submitting ID " + answerID);
+
+             try {
+                 bufferedWriter = getBufferedWriter(submit_answer_url);
+                 data_string = URLEncoder.encode("currentQID", "UTF-8") + "=" + URLEncoder.encode(qID, "UTF-8") + "&" +
+                         URLEncoder.encode("deviceID", "UTF-8") + "=" + URLEncoder.encode(phoneID, "UTF-8") + "&" +
+                         URLEncoder.encode("answer", "UTF-8") + "=" + URLEncoder.encode(answerID, "UTF-8");
+                 bufferedWriter.write(data_string);
+                 bufferedWriter.flush();
+                 bufferedWriter.close();
+                 outputStream.close();
+
+                 //check response
+                 inputStream = httpURLConnection.getInputStream();
+                 bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+                 result_json_string = readJSONToString(bufferedReader);
+
+                 bufferedReader.close();
+                 inputStream.close();
+                 httpURLConnection.disconnect();
+
+
+                 return result_json_string;
+             } catch (MalformedURLException e) {
+                 e.printStackTrace();
+             } catch (IOException e) {
+                 e.printStackTrace();
+             }
+         }
 
         return null;
     }
