@@ -14,9 +14,9 @@
         android:text="Fetch Question!!!!"
         android:layout_width="1000px"
         android:layout_height="1000px"
+        android:layout_centerInParent="true"
         android:id="@+id/button"
         android:layout_centerVertical="true"
-        android:layout_alignParentStart="true"
         android:onClick="fetchQuestion"
         style="@style/Widget.AppCompat.Button.Colored" />
 </RelativeLayout>
