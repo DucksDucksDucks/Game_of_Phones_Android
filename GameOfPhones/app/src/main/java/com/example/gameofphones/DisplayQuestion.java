@@ -4,8 +4,11 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -29,19 +32,23 @@ public class DisplayQuestion extends AppCompatActivity {
     private int answerIDs[] = new int[4];
     private int selectedID;
     private int deviceID;
+    private String imageName;
+    private String picFilename;
+
+    private String images_url = "http://mcs.drury.edu/amerritt/images/";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_display_question);
 
-        int teacherID = EnterTeacherID.getTeacherID();
+        int teacherID = 1;
+        // int teacherID = EnterTeacherID.getTeacherID();
 
         BackgroundTask backgroundTask = new BackgroundTask(this);
         try {
-
             questionMessage = backgroundTask.execute("getQuestion", Integer.toString(teacherID)).get();
-
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
@@ -56,6 +63,9 @@ public class DisplayQuestion extends AppCompatActivity {
         System.out.println("Type = " + questionType);
         correctID = getCorrectID(questionMessage);
         System.out.println("Correct = " + correctID);
+        imageName = getImageName(questionMessage);
+        System.out.println("Image = " + imageName);
+
 
         TextView textField = (TextView) findViewById(R.id.questionBox);
         textField.setText(questionString);
@@ -64,45 +74,53 @@ public class DisplayQuestion extends AppCompatActivity {
         BackgroundTask backgroundTask2 = new BackgroundTask(this);
         try {
             answerMessage = backgroundTask2.execute("getAnswers", Integer.toString(questionID)).get();
-
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
             e.printStackTrace();
         }
 
-
         setAnswers(answerMessage);
 
+
+        if(!imageName.equals("null")){
+            String imageUrl = images_url + imageName;
+            System.out.println(imageUrl);
+        ImageView imageView = (ImageView) findViewById(R.id.qImage);
+        Picasso.with(this)
+                .load(imageUrl)
+                .into(imageView); }
+
+        else{System.out.println("image null");}
     }
 
 
     public void firstAnswer(View view){
-
         selectedID = answerIDs[0];
-
         Toast.makeText(this, "you selected " + selectedID, Toast.LENGTH_LONG).show();
+        View b = findViewById(R.id.submitButton);
+        b.setVisibility(View.VISIBLE);
     }
 
     public void secondAnswer(View view){
-
         selectedID = answerIDs[1];
-
         Toast.makeText(this, "you selected " + selectedID, Toast.LENGTH_LONG).show();
+        View b = findViewById(R.id.submitButton);
+        b.setVisibility(View.VISIBLE);
     }
 
     public void thirdAnswer(View view){
-
         selectedID = answerIDs[2];
-
         Toast.makeText(this, "you selected " + selectedID, Toast.LENGTH_LONG).show();
+        View b = findViewById(R.id.submitButton);
+        b.setVisibility(View.VISIBLE);
     }
 
     public void fourthAnswer(View view){
-
         selectedID = answerIDs[3];
-
         Toast.makeText(this, "you selected " + selectedID, Toast.LENGTH_LONG).show();
+        View b = findViewById(R.id.submitButton);
+        b.setVisibility(View.VISIBLE);
     }
 
 
@@ -110,13 +128,13 @@ public class DisplayQuestion extends AppCompatActivity {
         Intent intent = new Intent(this, SubmittedAnswer.class);
         System.out.println("Submitting ID " + selectedID);
 
-        deviceID = MainActivity.getDeviceID();
+        deviceID = 1;
+        // deviceID = MainActivity.getDeviceID();
         int status = -1;
 
         BackgroundTask backgroundTask = new BackgroundTask(this);
         try {
             submitMessage = backgroundTask.execute("submitAnswer", Integer.toString(questionID),Integer.toString(deviceID),Integer.toString(selectedID)).get();
-
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
@@ -126,29 +144,23 @@ public class DisplayQuestion extends AppCompatActivity {
         System.out.println(submitMessage);
 
         try{
-
             jsonObject = new JSONObject(submitMessage);
             jsonArray = jsonObject.getJSONArray("errstatus");
             JSONObject JO = jsonArray.getJSONObject(0);
             status = JO.getInt("status");
-
         }
         catch (JSONException e){e.printStackTrace();}
 
         if(status == 1){
             startActivity(intent);
         }
-
         if(status == 0){
             Toast.makeText(this, "Database error", Toast.LENGTH_LONG).show();
         }
-
         if(status == -1){
             Toast.makeText(this, "Oops", Toast.LENGTH_LONG).show();
         }
-
     }
-
 
     public void setAnswers(String message){
 
@@ -170,14 +182,67 @@ public class DisplayQuestion extends AppCompatActivity {
             }
             catch (JSONException e){e.printStackTrace();}
 
+
+            // get picture urls
+
+            try{
+                JSONObject JO = jsonArray.getJSONObject(i);
+                picFilename = JO.getString("p_filename");
+                System.out.println("Picture filename = " + picFilename);
+            }
+            catch (JSONException e){e.printStackTrace();}
+
+
             if(i==0){TextView textField = (TextView) findViewById(R.id.answer1);
-                textField.setText(answerText);}
+                textField.setText(answerText);
+                View b = findViewById(R.id.answer1);
+                b.setVisibility(View.VISIBLE);
+
+                if(!picFilename.equals("null")){
+                    String imageUrl = images_url + picFilename;
+                    System.out.println(imageUrl);
+                    ImageView imageView = (ImageView) findViewById(R.id.imgAnswer1);
+                    Picasso.with(this)
+                            .load(imageUrl)
+                            .into(imageView); }
+
+            }
             if(i==1){TextView textField = (TextView) findViewById(R.id.answer2);
-                textField.setText(answerText);}
+                textField.setText(answerText);
+                View b = findViewById(R.id.answer2);
+                b.setVisibility(View.VISIBLE);
+
+                if(!picFilename.equals("null")){
+                    String imageUrl = images_url + picFilename;
+                    System.out.println(imageUrl);
+                    ImageView imageView = (ImageView) findViewById(R.id.imgAnswer2);
+                    Picasso.with(this)
+                            .load(imageUrl)
+                            .into(imageView); }}
             if(i==2){TextView textField = (TextView) findViewById(R.id.answer3);
-                textField.setText(answerText);}
+                textField.setText(answerText);
+                View b = findViewById(R.id.answer3);
+                b.setVisibility(View.VISIBLE);
+
+                if(!picFilename.equals("null")){
+                    String imageUrl = images_url + picFilename;
+                    System.out.println(imageUrl);
+                    ImageView imageView = (ImageView) findViewById(R.id.imgAnswer3);
+                    Picasso.with(this)
+                            .load(imageUrl)
+                            .into(imageView); }}
             if(i==3){TextView textField = (TextView) findViewById(R.id.answer4);
-                textField.setText(answerText);}
+                textField.setText(answerText);
+                View b = findViewById(R.id.answer4);
+                b.setVisibility(View.VISIBLE);
+
+                if(!picFilename.equals("null")){
+                    String imageUrl = images_url + picFilename;
+                    System.out.println(imageUrl);
+                    ImageView imageView = (ImageView) findViewById(R.id.imgAnswer4);
+                    Picasso.with(this)
+                            .load(imageUrl)
+                            .into(imageView); }}
 
             // put the a_id in the answer array
 
@@ -244,6 +309,17 @@ public class DisplayQuestion extends AppCompatActivity {
 
     }
 
+    private String getImageName(String message){
+        try{
+            jsonObject = new JSONObject(message);
+            jsonArray = jsonObject.getJSONArray("question_info");
+            JSONObject JO = jsonArray.getJSONObject(0);
+            return JO.getString("p_filename");
+        }
+        catch (JSONException e){e.printStackTrace();}
+        return "";
+
+    }
 
 
 }

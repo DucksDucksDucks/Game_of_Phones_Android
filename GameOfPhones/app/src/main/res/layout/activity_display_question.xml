@@ -1,4 +1,5 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
     android:orientation="vertical"
@@ -7,39 +8,74 @@
     android:paddingBottom="@dimen/activity_vertical_margin" tools:context=".MainActivity">
 
 
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/qImage"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/questionBox"
         android:text="" />
-<RadioGroup
+
+
+    <RadioGroup
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:id="@+id/buttons">
+    android:id="@+id/buttons"
+        >
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/imgAnswer1"
+            android:layout_marginLeft="100px"/>
     <RadioButton
         android:text=""
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/answer1"
-        android:onClick="firstAnswer"/>
+        android:onClick="firstAnswer"
+        android:visibility="gone"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/imgAnswer2"
+            android:layout_marginLeft="100px"/>
     <RadioButton
         android:text=""
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/answer2"
-        android:onClick="secondAnswer"/>
+        android:onClick="secondAnswer"
+        android:visibility="gone"/>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/imgAnswer3"
+            android:layout_marginLeft="100px"/>
     <RadioButton
         android:text=""
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/answer3"
-        android:onClick="thirdAnswer"/>
+        android:onClick="thirdAnswer"
+        android:visibility="gone"/>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/imgAnswer4"
+            android:layout_marginLeft="100px"/>
     <RadioButton
         android:text=""
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/answer4"
-        android:onClick="fourthAnswer"/>
+        android:onClick="fourthAnswer"
+        android:visibility="gone"/>
 </RadioGroup>
 
 
@@ -56,6 +92,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/submitButton"
+        android:visibility="gone"
         android:onClick="sendMessage" />
 
 
