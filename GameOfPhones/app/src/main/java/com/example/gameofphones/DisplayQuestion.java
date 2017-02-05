@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -34,6 +35,7 @@ public class DisplayQuestion extends AppCompatActivity {
     private int deviceID;
     private String imageName;
     private String picFilename;
+    private EditText answerBox;
 
     private String images_url = "http://mcs.drury.edu/amerritt/images/";
 
@@ -43,7 +45,7 @@ public class DisplayQuestion extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_display_question);
 
-        int teacherID = 1;
+        int teacherID = 14;
         // int teacherID = EnterTeacherID.getTeacherID();
 
         BackgroundTask backgroundTask = new BackgroundTask(this);
@@ -70,18 +72,29 @@ public class DisplayQuestion extends AppCompatActivity {
         TextView textField = (TextView) findViewById(R.id.questionBox);
         textField.setText(questionString);
 
+        if(questionType.equals("mult")) {
+            BackgroundTask backgroundTask2 = new BackgroundTask(this);
+            try {
+                answerMessage = backgroundTask2.execute("getAnswers", Integer.toString(questionID)).get();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            }
 
-        BackgroundTask backgroundTask2 = new BackgroundTask(this);
-        try {
-            answerMessage = backgroundTask2.execute("getAnswers", Integer.toString(questionID)).get();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
+            setAnswersMult(answerMessage);
+
         }
+        else if(questionType.equals("tf")){
 
-        setAnswers(answerMessage);
+            setAnswersTF();
 
+        }
+        else if(questionType.equals("sa")){
+
+            setAnswersSA();
+
+        }
 
         if(!imageName.equals("null")){
             String imageUrl = images_url + imageName;
@@ -162,7 +175,47 @@ public class DisplayQuestion extends AppCompatActivity {
         }
     }
 
-    public void setAnswers(String message){
+    public void sendText(View view){
+        String answerText = answerBox.getText().toString();
+
+        Intent intent = new Intent(this, SubmittedAnswer.class);
+        System.out.println("Submitting answer:" + answerText);
+
+        deviceID = 1;
+        // deviceID = MainActivity.getDeviceID();
+        int status = -1;
+
+        BackgroundTask backgroundTask = new BackgroundTask(this);
+        try {
+            submitMessage = backgroundTask.execute("submitAnswer", Integer.toString(questionID),Integer.toString(deviceID),answerText).get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+
+        System.out.println(submitMessage);
+
+        try{
+            jsonObject = new JSONObject(submitMessage);
+            jsonArray = jsonObject.getJSONArray("errstatus");
+            JSONObject JO = jsonArray.getJSONObject(0);
+            status = JO.getInt("status");
+        }
+        catch (JSONException e){e.printStackTrace();}
+
+        if(status == 1){
+            startActivity(intent);
+        }
+        if(status == 0){
+            Toast.makeText(this, "Database error", Toast.LENGTH_LONG).show();
+        }
+        if(status == -1){
+            Toast.makeText(this, "Oops", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    public void setAnswersMult(String message){
 
         try{
             jsonObject = new JSONObject(message);
@@ -256,6 +309,33 @@ public class DisplayQuestion extends AppCompatActivity {
         }
 
     }
+
+
+    public void setAnswersTF(){
+
+        TextView textField = (TextView) findViewById(R.id.answer1);
+        textField.setText("True");
+        View b = findViewById(R.id.answer1);
+        b.setVisibility(View.VISIBLE);
+
+        TextView textField2 = (TextView) findViewById(R.id.answer2);
+        textField2.setText("False");
+        View b2 = findViewById(R.id.answer2);
+        b2.setVisibility(View.VISIBLE);
+
+        answerIDs[0] = 1;
+        answerIDs[1] = 2;
+
+    }
+
+    public void setAnswersSA(){
+        answerBox = (EditText) findViewById(R.id.answerText);
+        answerBox.setVisibility(View.VISIBLE);
+
+        View b = findViewById(R.id.submitButton2);
+        b.setVisibility(View.VISIBLE);
+    }
+
 
     private int getQID(String message){
 
