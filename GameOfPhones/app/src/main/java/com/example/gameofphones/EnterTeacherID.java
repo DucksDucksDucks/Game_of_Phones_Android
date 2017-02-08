@@ -24,15 +24,13 @@ public class EnterTeacherID extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_enter_teacher_id);
-
     }
 
+    // Sets the ID to entered ID. Checks if the ID currently exists in the database.
     public void sendMessage(View view) {
         Intent intent = new Intent(this, GetQuestion.class);
         EditText myIDET = (EditText) findViewById(R.id.teacherID);
         String myID = myIDET.getText().toString();
-
-
         try {
             teacherID = Integer.parseInt(myID);
         }
@@ -45,7 +43,6 @@ public class EnterTeacherID extends AppCompatActivity {
         BackgroundTask backgroundTask = new BackgroundTask(this);
         try {
             message = backgroundTask.execute("checkID", myID.toString()).get();
-
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
@@ -59,27 +56,22 @@ public class EnterTeacherID extends AppCompatActivity {
         else{
             Toast.makeText(this, "I don't recognize that ID. Try again." , Toast.LENGTH_LONG).show();
         }
-
     }
 
     private boolean isSet(String message){
-
         try{
             jsonObject = new JSONObject(message);
             jsonArray = jsonObject.getJSONArray("question_info");
-
             if (jsonArray.length() == 0 ){
                 return false;
             }
             else {return true;}
         }
         catch (JSONException e){e.printStackTrace();}
-
         return false;
     }
 
     static public int getTeacherID(){
         return teacherID;
     }
-
 }

@@ -33,9 +33,11 @@ public class DisplayQuestion extends AppCompatActivity {
     private int answerIDs[] = new int[4];
     private int selectedID;
     private int deviceID;
+    private int teacherID;
     private String imageName;
     private String picFilename;
     private EditText answerBox;
+    private boolean DEBUG = MainActivity.DEBUG;
 
     private String images_url = "http://mcs.drury.edu/amerritt/images/";
 
@@ -45,8 +47,16 @@ public class DisplayQuestion extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_display_question);
 
-        int teacherID = 14;
-        // int teacherID = EnterTeacherID.getTeacherID();
+
+        if(DEBUG) {
+            // skips entering ID screens, manually set
+            teacherID = 14;
+            deviceID = 1;
+        }
+        else{
+            teacherID = EnterTeacherID.getTeacherID();
+            deviceID = MainActivity.getDeviceID();
+        }
 
         BackgroundTask backgroundTask = new BackgroundTask(this);
         try {
@@ -86,14 +96,10 @@ public class DisplayQuestion extends AppCompatActivity {
 
         }
         else if(questionType.equals("tf")){
-
             setAnswersTF();
-
         }
         else if(questionType.equals("sa")){
-
             setAnswersSA();
-
         }
 
         if(!imageName.equals("null")){
@@ -141,8 +147,6 @@ public class DisplayQuestion extends AppCompatActivity {
         Intent intent = new Intent(this, SubmittedAnswer.class);
         System.out.println("Submitting ID " + selectedID);
 
-        deviceID = 1;
-        // deviceID = MainActivity.getDeviceID();
         int status = -1;
 
         BackgroundTask backgroundTask = new BackgroundTask(this);
@@ -181,8 +185,6 @@ public class DisplayQuestion extends AppCompatActivity {
         Intent intent = new Intent(this, SubmittedAnswer.class);
         System.out.println("Submitting answer:" + answerText);
 
-        deviceID = 1;
-        // deviceID = MainActivity.getDeviceID();
         int status = -1;
 
         BackgroundTask backgroundTask = new BackgroundTask(this);
@@ -305,9 +307,7 @@ public class DisplayQuestion extends AppCompatActivity {
                 answerIDs[i] = answerID;
             }
             catch (JSONException e){e.printStackTrace();}
-
         }
-
     }
 
 
@@ -325,7 +325,6 @@ public class DisplayQuestion extends AppCompatActivity {
 
         answerIDs[0] = 1;
         answerIDs[1] = 2;
-
     }
 
     public void setAnswersSA(){
@@ -347,9 +346,7 @@ public class DisplayQuestion extends AppCompatActivity {
         }
         catch (JSONException e){e.printStackTrace();}
         return -1;
-
     }
-
 
     private String getQuestionText(String message){
 
@@ -361,8 +358,6 @@ public class DisplayQuestion extends AppCompatActivity {
         }
         catch (JSONException e){e.printStackTrace();}
         return "";
-
-
     }
 
     private String getQuestionType(String message){
@@ -374,7 +369,6 @@ public class DisplayQuestion extends AppCompatActivity {
         }
         catch (JSONException e){e.printStackTrace();}
         return "";
-
     }
 
     private int getCorrectID(String message){
@@ -386,7 +380,6 @@ public class DisplayQuestion extends AppCompatActivity {
         }
         catch (JSONException e){e.printStackTrace();}
         return -1;
-
     }
 
     private String getImageName(String message){
@@ -398,8 +391,5 @@ public class DisplayQuestion extends AppCompatActivity {
         }
         catch (JSONException e){e.printStackTrace();}
         return "";
-
     }
-
-
 }

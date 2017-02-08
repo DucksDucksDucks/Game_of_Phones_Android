@@ -17,16 +17,25 @@ public class MainActivity extends AppCompatActivity {
 
    static public int deviceID;
     private String message;
-    private JSONObject jsonObject;
     private JSONArray jsonArray;
+    static public boolean DEBUG = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        if(DEBUG){
+            // go straight to screen to debug
+            Intent intent = new Intent(this, DisplayQuestion.class);
+            startActivity(intent);
+        }
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
     }
 
-    /** Called when the user clicks the Send button */
+    /** Called when the user clicks the Send button
+     *  Runs "add device" with the entered nickname
+     * */
     public void sendMessage(View view) {
         Intent intent = new Intent(this, EnterTeacherID.class);
         EditText myNickname = (EditText) findViewById(R.id.nickname);
@@ -41,16 +50,15 @@ public class MainActivity extends AppCompatActivity {
         } catch (ExecutionException e) {
             e.printStackTrace();
         }
-
         deviceID = getID(message);
         Toast.makeText(this, "your ID is" + deviceID, Toast.LENGTH_LONG).show();
         startActivity(intent);
     }
 
+    // Gets the deviceID from the JSON message returned in "add device"
     private int getID(String message){
-
         try{
-            jsonObject = new JSONObject(message);
+            JSONObject jsonObject = new JSONObject(message);
             jsonArray = jsonObject.getJSONArray("deviceID");
             JSONObject JO = jsonArray.getJSONObject(0);
             return JO.getInt("device_id");
@@ -59,6 +67,7 @@ public class MainActivity extends AppCompatActivity {
         return -1;
     }
 
+    // returns the device id to other activities
     static public int getDeviceID(){
         return deviceID;
     }
