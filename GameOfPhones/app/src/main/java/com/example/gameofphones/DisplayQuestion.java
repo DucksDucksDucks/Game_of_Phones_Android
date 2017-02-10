@@ -54,8 +54,8 @@ public class DisplayQuestion extends AppCompatActivity {
             deviceID = 1;
         }
         else{
-            teacherID = EnterTeacherID.getTeacherID();
-            deviceID = MainActivity.getDeviceID();
+            teacherID = EnterTeacherID.teacher.getTeacherID();
+            deviceID = MainActivity.student.getDeviceID();
         }
 
         BackgroundTask backgroundTask = new BackgroundTask(this);

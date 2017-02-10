@@ -15,15 +15,16 @@ import java.util.concurrent.ExecutionException;
 
 public class EnterTeacherID extends AppCompatActivity {
 
-    static public int teacherID;
+    private int teacherID;
     private String message;
-    private JSONObject jsonObject;
-    private JSONArray jsonArray;
+    public static Teacher teacher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_enter_teacher_id);
+
+        teacher = new Teacher();
     }
 
     // Sets the ID to entered ID. Checks if the ID currently exists in the database.
@@ -31,6 +32,7 @@ public class EnterTeacherID extends AppCompatActivity {
         Intent intent = new Intent(this, GetQuestion.class);
         EditText myIDET = (EditText) findViewById(R.id.teacherID);
         String myID = myIDET.getText().toString();
+
         try {
             teacherID = Integer.parseInt(myID);
         }
@@ -38,18 +40,13 @@ public class EnterTeacherID extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        Toast.makeText(this, "you entered " + teacherID, Toast.LENGTH_LONG).show();
-
-        BackgroundTask backgroundTask = new BackgroundTask(this);
-        try {
-            message = backgroundTask.execute("checkID", myID.toString()).get();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
+        if(MainActivity.VERBOSE) {
+            Toast.makeText(this, "you entered " + teacherID, Toast.LENGTH_LONG).show();
         }
 
-        if(isSet(message)){
+        teacher.setID(this, teacherID);
+
+        if(teacher.isSet()){
             startActivity(intent);
         }
 
@@ -58,20 +55,5 @@ public class EnterTeacherID extends AppCompatActivity {
         }
     }
 
-    private boolean isSet(String message){
-        try{
-            jsonObject = new JSONObject(message);
-            jsonArray = jsonObject.getJSONArray("question_info");
-            if (jsonArray.length() == 0 ){
-                return false;
-            }
-            else {return true;}
-        }
-        catch (JSONException e){e.printStackTrace();}
-        return false;
-    }
 
-    static public int getTeacherID(){
-        return teacherID;
-    }
 }

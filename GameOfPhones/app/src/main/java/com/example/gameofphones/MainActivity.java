@@ -15,60 +15,36 @@ import java.util.concurrent.ExecutionException;
 
 public class MainActivity extends AppCompatActivity {
 
-   static public int deviceID;
-    private String message;
-    private JSONArray jsonArray;
     static public boolean DEBUG = false;
+    public static Student student;
+    static public boolean VERBOSE = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         if(DEBUG){
             // go straight to screen to debug
             Intent intent = new Intent(this, DisplayQuestion.class);
             startActivity(intent);
         }
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        student = new Student();
     }
 
-    /** Called when the user clicks the Send button
-     *  Runs "add device" with the entered nickname
-     * */
+    // Called when the user clicks the "submit" button
     public void sendMessage(View view) {
         Intent intent = new Intent(this, EnterTeacherID.class);
         EditText myNickname = (EditText) findViewById(R.id.nickname);
         String nickname = myNickname.getText().toString();
-        BackgroundTask backgroundTask = new BackgroundTask(this);
-        try {
-            System.out.println(nickname);
-            message = backgroundTask.execute("addDevice", nickname).get();
 
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
+        student.registerDevice(nickname, this);
+
+
+        if(VERBOSE) {
+            int deviceID = student.getDeviceID();
+
+            Toast.makeText(this, "your ID is" + deviceID, Toast.LENGTH_LONG).show();
+            startActivity(intent);
         }
-        deviceID = getID(message);
-        Toast.makeText(this, "your ID is" + deviceID, Toast.LENGTH_LONG).show();
-        startActivity(intent);
-    }
-
-    // Gets the deviceID from the JSON message returned in "add device"
-    private int getID(String message){
-        try{
-            JSONObject jsonObject = new JSONObject(message);
-            jsonArray = jsonObject.getJSONArray("deviceID");
-            JSONObject JO = jsonArray.getJSONObject(0);
-            return JO.getInt("device_id");
-        }
-        catch (JSONException e){e.printStackTrace();}
-        return -1;
-    }
-
-    // returns the device id to other activities
-    static public int getDeviceID(){
-        return deviceID;
     }
 }
