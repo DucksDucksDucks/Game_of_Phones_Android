@@ -18,6 +18,8 @@ public class EnterTeacherID extends AppCompatActivity {
     private int teacherID;
     private String message;
     public static Teacher teacher;
+    private boolean DEBUG = MainActivity.DEBUG;
+    private boolean VERBOSE = MainActivity.VERBOSE;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +42,7 @@ public class EnterTeacherID extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        if(MainActivity.VERBOSE) {
+        if(VERBOSE) {
             Toast.makeText(this, "you entered " + teacherID, Toast.LENGTH_LONG).show();
         }
 

@@ -19,7 +19,7 @@ public class GetQuestion extends AppCompatActivity {
     private JSONObject jsonObject;
     private JSONArray jsonArray;
     private int teacherID;
-    public static Question question;
+    public static ClassSession session;
 
     // Puts a button to press if question isn't set yet
 
@@ -28,13 +28,13 @@ public class GetQuestion extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_get_question);
 
-        question = new Question();
+        session = new ClassSession();
 
         teacherID = EnterTeacherID.teacher.getTeacherID();
 
-        question.setMessage(this, teacherID);
+        session.setMessage(this, teacherID);
 
-        if(question.isSet()){
+        if(session.isSet()){
             Intent intent = new Intent(this, DisplayQuestion.class);
             startActivity(intent);
         }
@@ -45,9 +45,9 @@ public class GetQuestion extends AppCompatActivity {
 
     public void fetchQuestion(View view){
 
-        question.setMessage(this, teacherID);
+        session.setMessage(this, teacherID);
 
-        if(question.isSet()){
+        if(session.isSet()){
             Intent intent = new Intent(this, DisplayQuestion.class);
             startActivity(intent);
         }

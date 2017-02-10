@@ -13,14 +13,14 @@
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity android:name=".EnterTeacherID" />
-        <activity android:name=".DisplayQuestion" >
-        </activity>
+        <activity android:name=".DisplayQuestion"></activity>
         <activity android:name=".SubmittedAnswer" />
-        <activity android:name=".GetQuestion"></activity>
+        <activity android:name=".GetQuestion" />
     </application>
 
 </manifest>

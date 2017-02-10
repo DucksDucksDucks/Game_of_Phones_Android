@@ -13,6 +13,20 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Successfully submitted answer" />
+        android:text="Successfully submitted answer"
+        android:id="@+id/textView" />
+
+    <Button
+        android:text="check if answer is displayed"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:id="@+id/button2"
+        android:layout_below="@+id/textView"
+        style="@style/Widget.AppCompat.Button.Colored"
+        android:onClick="sendMessage"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentStart="true" />
+
 
 </RelativeLayout>
