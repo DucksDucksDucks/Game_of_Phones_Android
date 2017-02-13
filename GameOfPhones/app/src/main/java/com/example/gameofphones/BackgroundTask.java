@@ -52,11 +52,11 @@ public class BackgroundTask extends AsyncTask<String, Void, String> {
 
     @Override
     protected void onPreExecute() {
-        create_id_url = "http://mcs.drury.edu/amerritt/createDeviceID.php";
-        check_id_url = "http://mcs.drury.edu/amerritt/isTeacherIDSet.php";
-        get_question_url = "http://mcs.drury.edu/amerritt/getQuestion.php";
-        get_answers_url = "http://mcs.drury.edu/amerritt/getQuestionAnswers.php";
-        submit_answer_url = "http://mcs.drury.edu/amerritt/sendAnswer.php";
+        create_id_url = "http://mcs.drury.edu/gameofphones/mobilefiles/webservice/createdeviceid.php";
+        check_id_url = "http://mcs.drury.edu/gameofphones/mobilefiles/webservice/isteacheridset.php";
+        get_question_url = "http://mcs.drury.edu/gameofphones/mobilefiles/webservice/getquestion.php";
+        get_answers_url = "http://mcs.drury.edu/gameofphones/mobilefiles/webservice/getquestionanswers.php";
+        submit_answer_url = "http://mcs.drury.edu/gameofphones/mobilefiles/webservice/sendanswer.php";
     }
 
     @Override

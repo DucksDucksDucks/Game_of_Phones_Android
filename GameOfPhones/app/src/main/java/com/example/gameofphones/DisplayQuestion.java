@@ -42,7 +42,7 @@ public class DisplayQuestion extends AppCompatActivity {
 
     public Question question;
 
-    private String images_url = "http://mcs.drury.edu/amerritt/images/";
+    private String images_url = "http://mcs.drury.edu/gameofphones/mobilefiles/images/";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
