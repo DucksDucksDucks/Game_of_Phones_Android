@@ -226,6 +226,11 @@ public class DisplayQuestion extends AppCompatActivity {
         }
     }
 
+    public void refreshQuestion(View view){
+        Intent intent = new Intent(this, DisplayQuestion.class);
+        startActivity(intent);
+    }
+
     public void setAnswersMult(String message){
 
         try{

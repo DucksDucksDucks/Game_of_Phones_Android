@@ -19,5 +19,10 @@ public class SubmittedAnswer extends AppCompatActivity {
         Toast.makeText(this, "This doesn't do anything yet :)" , Toast.LENGTH_LONG).show();
     }
 
+    public void refreshQuestion(View view){
+        Intent intent = new Intent(this, DisplayQuestion.class);
+        startActivity(intent);
+    }
+
 
 }

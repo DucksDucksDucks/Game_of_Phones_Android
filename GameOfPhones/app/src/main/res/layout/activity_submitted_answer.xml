@@ -18,7 +18,7 @@
 
     <Button
         android:text="check if answer is displayed"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
         android:id="@+id/button2"
@@ -27,6 +27,20 @@
         android:onClick="sendMessage"
         android:layout_alignParentEnd="true"
         android:layout_alignParentStart="true" />
+
+
+    <Button
+        android:text="Answer a new question"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/button2"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="150px"
+        android:id="@+id/button4"
+        style="@style/Widget.AppCompat.Button.Colored"
+        android:onClick="refreshQuestion"/>
+
+
 
 
 </RelativeLayout>
