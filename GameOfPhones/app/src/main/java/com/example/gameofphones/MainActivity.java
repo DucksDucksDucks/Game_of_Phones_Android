@@ -33,17 +33,23 @@ public class MainActivity extends AppCompatActivity {
 
     // Called when the user clicks the "submit" button
     public void sendMessage(View view) {
-        Intent intent = new Intent(this, EnterTeacherID.class);
         EditText myNickname = (EditText) findViewById(R.id.nickname);
         String nickname = myNickname.getText().toString();
 
-        student.registerDevice(nickname, this);
 
-
-        if(VERBOSE) {
+        if(nickname.length() == 0){
+            Toast.makeText(this, "Please enter a nickname", Toast.LENGTH_LONG).show();
+        }
+        else if(nickname.length() > 20){
+            Toast.makeText(this, "Nickname too long", Toast.LENGTH_LONG).show();
+        }
+        else {
+            Intent intent = new Intent(this, EnterTeacherID.class);
+            student.registerDevice(nickname, this);
             int deviceID = student.getDeviceID();
-
-            Toast.makeText(this, "your ID is" + deviceID, Toast.LENGTH_LONG).show();
+            if (VERBOSE) {
+                Toast.makeText(this, "your ID is" + deviceID, Toast.LENGTH_LONG).show();
+            }
             startActivity(intent);
         }
     }

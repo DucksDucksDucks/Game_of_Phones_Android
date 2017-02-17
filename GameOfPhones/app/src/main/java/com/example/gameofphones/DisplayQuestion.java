@@ -40,7 +40,7 @@ public class DisplayQuestion extends AppCompatActivity {
     private boolean DEBUG = MainActivity.DEBUG;
     private boolean VERBOSE = MainActivity.VERBOSE;
 
-    public Question question;
+    public static Question question;
 
     private String images_url = "http://mcs.drury.edu/gameofphones/mobilefiles/images/";
 
