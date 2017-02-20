@@ -99,7 +99,7 @@
 
 
     <Button
-        android:text="Submit Answer"
+        android:text="Submit Multiple Choice Answer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/submitButton"
@@ -108,7 +108,7 @@
         style="@style/Widget.AppCompat.Button.Colored" />
 
     <Button
-        android:text="Submit Answer"
+        android:text="Submit Text Answer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/submitButton2"

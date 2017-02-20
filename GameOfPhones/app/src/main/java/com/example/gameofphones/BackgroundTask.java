@@ -195,7 +195,6 @@ public class BackgroundTask extends AsyncTask<String, Void, String> {
              qID = params[1];
              phoneID = params[2];
              answerID = params[3];
-             System.out.println("Submitting ID " + answerID);
 
              try {
                  bufferedWriter = getBufferedWriter(submit_answer_url);

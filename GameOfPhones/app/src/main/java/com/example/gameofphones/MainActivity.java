@@ -44,6 +44,9 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(this, "Nickname too long", Toast.LENGTH_LONG).show();
         }
         else {
+            View b = findViewById(R.id.submit);
+            b.setEnabled(false);
+
             Intent intent = new Intent(this, EnterTeacherID.class);
             student.registerDevice(nickname, this);
             int deviceID = student.getDeviceID();

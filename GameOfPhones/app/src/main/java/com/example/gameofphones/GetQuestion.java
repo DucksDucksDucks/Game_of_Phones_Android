@@ -15,9 +15,6 @@ import java.util.concurrent.ExecutionException;
 
 public class GetQuestion extends AppCompatActivity {
 
-    private String message;
-    private JSONObject jsonObject;
-    private JSONArray jsonArray;
     private int teacherID;
     public static ClassSession session;
 
@@ -39,7 +36,7 @@ public class GetQuestion extends AppCompatActivity {
             startActivity(intent);
         }
         else{
-            Toast.makeText(this, "Question Not Set Yet. Stare At This Button" , Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Question Not Set Yet" , Toast.LENGTH_LONG).show();
         }
     }
 
@@ -52,7 +49,7 @@ public class GetQuestion extends AppCompatActivity {
             startActivity(intent);
         }
         else{
-            Toast.makeText(this, "Not Yet :(" , Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Not Yet" , Toast.LENGTH_LONG).show();
         }
 
     }

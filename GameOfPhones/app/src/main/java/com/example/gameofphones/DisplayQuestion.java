@@ -156,6 +156,7 @@ public class DisplayQuestion extends AppCompatActivity {
     public void sendMessage(View view){
         Intent intent = new Intent(this, SubmittedAnswer.class);
         if(VERBOSE){
+            System.out.println("Submitting multi");
         System.out.println("Submitting ID " + selectedID);}
 
         int status = -1;
@@ -189,40 +190,60 @@ public class DisplayQuestion extends AppCompatActivity {
     }
 
     public void sendText(View view){
+        View b = findViewById(R.id.submitButton2);
+        b.setEnabled(false);
         String answerText = answerBox.getText().toString();
 
-        Intent intent = new Intent(this, SubmittedAnswer.class);
 
-        if(VERBOSE){
-        System.out.println("Submitting answer:" + answerText);}
+        System.out.println("Submitting text");
+        System.out.println("Answer text length = " + answerText.length());
 
-        int status = -1;
-
-        BackgroundTask backgroundTask = new BackgroundTask(this);
-        try {
-            submitMessage = backgroundTask.execute("submitAnswer", Integer.toString(questionID),Integer.toString(deviceID),answerText).get();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
+        if(answerText.length() == 0){
+            Toast.makeText(this, "Please enter an answer", Toast.LENGTH_LONG).show();
+            b.setEnabled(true);
         }
+        else if(answerText.length() > 200){
+            Toast.makeText(this, "Your answer is too long. Limit 200 characters", Toast.LENGTH_LONG).show();
+            b.setEnabled(true);
+        }
+        else {
 
-        try{
-            jsonObject = new JSONObject(submitMessage);
-            jsonArray = jsonObject.getJSONArray("errstatus");
-            JSONObject JO = jsonArray.getJSONObject(0);
-            status = JO.getInt("status");
-        }
-        catch (JSONException e){e.printStackTrace();}
+            Intent intent = new Intent(this, SubmittedAnswer.class);
 
-        if(status == 1){
-            startActivity(intent);
-        }
-        if(status == 0){
-            Toast.makeText(this, "Database error", Toast.LENGTH_LONG).show();
-        }
-        if(status == -1){
-            Toast.makeText(this, "Something went wrong", Toast.LENGTH_LONG).show();
+            if (VERBOSE) {
+                System.out.println("Submitting answer:" + answerText);
+            }
+
+            int status = -1;
+
+            BackgroundTask backgroundTask = new BackgroundTask(this);
+            try {
+                submitMessage = backgroundTask.execute("submitAnswer", Integer.toString(questionID), Integer.toString(deviceID), answerText).get();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            }
+
+            try {
+                jsonObject = new JSONObject(submitMessage);
+                jsonArray = jsonObject.getJSONArray("errstatus");
+                JSONObject JO = jsonArray.getJSONObject(0);
+                status = JO.getInt("status");
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            if (status == 1) {
+                startActivity(intent);
+            }
+            if (status == 0) {
+                Toast.makeText(this, "Database error", Toast.LENGTH_LONG).show();
+            }
+            if (status == -1) {
+                Toast.makeText(this, "Something went wrong", Toast.LENGTH_LONG).show();
+            }
+
         }
     }
 
