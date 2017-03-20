@@ -18,9 +18,10 @@
             </intent-filter>
         </activity>
         <activity android:name=".EnterTeacherID" />
-        <activity android:name=".DisplayQuestion"></activity>
+        <activity android:name=".DisplayQuestion" />
         <activity android:name=".SubmittedAnswer" />
         <activity android:name=".GetQuestion" />
+        <activity android:name=".GraphQuestion"></activity>
     </application>
 
 </manifest>

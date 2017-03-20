@@ -103,6 +103,10 @@ public class DisplayQuestion extends AppCompatActivity {
         else if(questionType.equals("sa")){
             setAnswersSA();
         }
+        else if(questionType.equals("draw")){
+            Intent intent = new Intent(this, GraphQuestion.class);
+            startActivity(intent);
+        }
 
         if(!imageName.equals("null")){
             String imageUrl = images_url + imageName;
