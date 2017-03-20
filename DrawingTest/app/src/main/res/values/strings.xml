@@ -1,8 +1,3 @@
 <resources>
-    <string name="app_name">Drawing Test</string>
-    <string name="start_new">New</string>
-    <string name="brush">Brush</string>
-    <string name="erase">Erase</string>
-    <string name="save">Save</string>
-    <string name="paint">Paint</string>
+    <string name="app_name">DrawingTest</string>
 </resources>
