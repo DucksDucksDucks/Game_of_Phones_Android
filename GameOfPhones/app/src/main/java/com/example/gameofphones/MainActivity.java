@@ -15,7 +15,7 @@ import java.util.concurrent.ExecutionException;
 
 public class MainActivity extends AppCompatActivity {
 
-    static public boolean DEBUG = false;
+    static public boolean DEBUG = true;
     public static Student student;
     static public boolean VERBOSE = true;
 
@@ -23,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         if(DEBUG){
             // go straight to screen to debug
-            Intent intent = new Intent(this, DisplayQuestion.class);
+            Intent intent = new Intent(this, GraphQuestion.class);
             startActivity(intent);
         }
         super.onCreate(savedInstanceState);

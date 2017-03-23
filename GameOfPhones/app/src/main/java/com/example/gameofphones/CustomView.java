@@ -105,24 +105,6 @@ public class CustomView extends View {
         return true;
     }
 
-    public void setErase(boolean isErase){
-        eraseMode = isErase;
-
-        if(eraseMode){
-            drawPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
-        }
-        else{
-            drawPaint.setXfermode(null);
-        }
-    }
-
-    public void eraseAll(){
-        drawPath = new Path();
-        paths.clear();
-        drawCanvas.drawColor(Color.WHITE);
-        invalidate();
-    }
-
     private void touch_start(float x, float y){
         undonePaths.clear();
         drawPath.reset();
@@ -161,14 +143,4 @@ public class CustomView extends View {
             invalidate();
         }
     }
-
-    public void setBrushSize(float newSize){
-        float pixelAmount = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, newSize, getResources().getDisplayMetrics());
-        currentBrushSize = pixelAmount;
-        canvasPaint.setStrokeWidth(newSize);
-    }
-
-    public void setLastBrushSize(float lastSize){lastBrushSize = lastSize;}
-    public float getLastBrushSize(){return lastBrushSize;}
-
 }
