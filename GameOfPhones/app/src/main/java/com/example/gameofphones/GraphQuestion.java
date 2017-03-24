@@ -1,6 +1,9 @@
 package com.example.gameofphones;
 
+import android.Manifest;
+import android.annotation.TargetApi;
 import android.content.DialogInterface;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -21,11 +24,21 @@ public class GraphQuestion extends AppCompatActivity {
 
     private Toolbar mToolbar_bottom;
     private static final String LOG_CAT = GraphQuestion.class.getSimpleName();
+    private static final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 1;
+    private static final int MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE = 2;
 
     private CustomView mCustomView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        if(checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
+            requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
+        }
+        if(checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
+            requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE);
+        }
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_graph_question);
 
@@ -83,6 +96,7 @@ public class GraphQuestion extends AppCompatActivity {
     public void saveThisDrawing(){
         String path = Environment.getExternalStorageDirectory().toString();
         path = path +"/"+ getString(R.string.app_name);
+        System.out.println("Path is " + path.toString());
         File dir = new File(path);
         mCustomView.setDrawingCacheEnabled(true);
 
@@ -90,9 +104,12 @@ public class GraphQuestion extends AppCompatActivity {
         String imgSaved = MediaStore.Images.Media.insertImage(getContentResolver(),
                 mCustomView.getDrawingCache(), imTitle, "a drawing");
 
+        System.out.println("imTitle is " + imTitle);
+
         try {
             if (!dir.isDirectory() || !dir.exists()){
-                dir.mkdirs();
+                boolean res = dir.mkdirs();
+                System.out.println("mkdirs " + res);
             }
             mCustomView.setDrawingCacheEnabled(true);
             File file = new File(dir, imTitle);

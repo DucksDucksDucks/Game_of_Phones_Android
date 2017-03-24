@@ -18,9 +18,10 @@
     <com.example.gameofphones.CustomView
         android:id="@+id/custom_view"
         android:layout_below="@+id/textView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@+id/toolbar_bottom" />
+        android:layout_centerHorizontal="true"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:background="@drawable/graph"/>
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar_bottom"

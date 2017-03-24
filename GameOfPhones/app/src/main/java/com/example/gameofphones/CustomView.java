@@ -23,9 +23,8 @@ public class CustomView extends View {
     private Path drawPath;
     private Paint canvasPaint;
     private Paint drawPaint;
-    private int paintColor = 0xFF660000;
+    private int paintColor = 0xFF000000;
     private Paint _paintBlur;
-    private boolean eraseMode = false;
     private Canvas drawCanvas;
     private Bitmap canvasBitmap;
     private float currentBrushSize, lastBrushSize;
@@ -35,7 +34,7 @@ public class CustomView extends View {
     private static final float TOUCH_TOLERANCE = 4;
 
     private void init(){
-        currentBrushSize = 20;
+        currentBrushSize = 10;
         lastBrushSize = currentBrushSize;
 
         drawPath = new Path();
@@ -67,7 +66,7 @@ public class CustomView extends View {
     }
 
     @Override
-    protected  void onDraw(Canvas canvas){
+    protected void onDraw(Canvas canvas){
         for (Path p : paths){
             canvas.drawPath(p, drawPaint);
         }
