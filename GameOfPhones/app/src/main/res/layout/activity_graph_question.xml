@@ -10,6 +10,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:paddingTop="10dp"
         android:paddingBottom="10dp"
         android:layout_centerHorizontal="true"
         android:text="This is the graph question page"
@@ -23,6 +24,17 @@
         android:layout_height="300dp"
         android:background="@drawable/graph"/>
 
+
+    <Button
+        android:id="@+id/SubmitButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/custom_view"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="64dp"
+        android:text="Submit"
+        android:onClick="submitGraphDialogue"/>
+
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar_bottom"
         android:layout_width="match_parent"
@@ -30,5 +42,6 @@
         android:layout_height="?attr/actionBarSize"
         android:background="?attr/colorPrimary"
         app:popupTheme="@style/AppTheme.PopupOverlay" />
+
 
 </RelativeLayout>

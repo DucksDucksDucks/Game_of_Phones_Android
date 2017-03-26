@@ -15,9 +15,10 @@ import java.util.concurrent.ExecutionException;
 
 public class MainActivity extends AppCompatActivity {
 
-    static public boolean DEBUG = true;
+    static public boolean DEBUG = false;
     public static Student student;
     static public boolean VERBOSE = true;
+    static public String nickname;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
     // Called when the user clicks the "submit" button
     public void sendMessage(View view) {
         EditText myNickname = (EditText) findViewById(R.id.nickname);
-        String nickname = myNickname.getText().toString();
+        nickname = myNickname.getText().toString();
 
 
         if(nickname.length() == 0){

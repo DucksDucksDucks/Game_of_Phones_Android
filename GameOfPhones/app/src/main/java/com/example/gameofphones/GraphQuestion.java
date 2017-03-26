@@ -3,6 +3,7 @@ package com.example.gameofphones;
 import android.Manifest;
 import android.annotation.TargetApi;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.os.Environment;
@@ -12,15 +13,28 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Base64;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.concurrent.ExecutionException;
 
 public class GraphQuestion extends AppCompatActivity {
+
+    private boolean VERBOSE = MainActivity.VERBOSE;
+    private boolean DEBUG = MainActivity.DEBUG;
+    private String nickname = MainActivity.nickname;
 
     private Toolbar mToolbar_bottom;
     private static final String LOG_CAT = GraphQuestion.class.getSimpleName();
@@ -28,6 +42,22 @@ public class GraphQuestion extends AppCompatActivity {
     private static final int MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE = 2;
 
     private CustomView mCustomView;
+    private String submitMessage;
+    private String photo;
+    private String filename;
+    private int teacherID;
+    private int deviceID;
+
+    private int questionID;
+    private String questionString;
+    private String questionType;
+    private int correctID;
+    private String imageName;
+
+    private JSONObject jsonObject;
+    private JSONArray jsonArray;
+
+    public static Question question;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +84,38 @@ public class GraphQuestion extends AppCompatActivity {
                return false;
            }
         });
+
+        if(DEBUG) {
+            // skips entering ID screens, manually set
+            teacherID = 14;
+            deviceID = 1;
+        }
+        else{
+            teacherID = EnterTeacherID.teacher.getTeacherID();
+            deviceID = MainActivity.student.getDeviceID();
+        }
+
+        question = new Question();
+
+        question.setMessage(teacherID, this);
+
+        questionID = question.getQID();
+        questionString = question.getQuestionText();
+        questionType = question.getQuestionType();
+        correctID = question.getCorrectID();
+        imageName = question.getImageName();
+
+        if(VERBOSE) {
+            System.out.println("ID = " + questionID);
+            System.out.println("Text = " + questionString);
+            System.out.println("Type = " + questionType);
+            System.out.println("Correct = " + correctID);
+            System.out.println("Image = " + imageName);
+        }
+
+        TextView textField = (TextView) findViewById(R.id.textView);
+        textField.setText(questionString);
+
     }
 
     private void handleDrawingIconTouched(int itemId){
@@ -76,6 +138,7 @@ public class GraphQuestion extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+
     public void saveDrawingDialog(){
         AlertDialog.Builder saveDialog = new AlertDialog.Builder(this);
         saveDialog.setTitle("Save drawing");
@@ -92,6 +155,86 @@ public class GraphQuestion extends AppCompatActivity {
         });
         saveDialog.show();
     }
+
+    public void submitGraphDialogue(View view){
+        AlertDialog.Builder saveDialog = new AlertDialog.Builder(this);
+        saveDialog.setTitle("Submit graph");
+        saveDialog.setMessage("Submit answer?");
+        saveDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                submitGraph();
+            }
+        });
+        saveDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener(){
+            public void onClick(DialogInterface dialog, int which){
+                dialog.cancel();
+            }
+        });
+        saveDialog.show();
+    }
+
+    public void submitGraph() {
+
+        if (DEBUG) {
+            nickname = "nickname";
+        }
+
+        filename = nickname + "_" + System.currentTimeMillis();
+        mCustomView.setDrawingCacheEnabled(true);
+        Bitmap bm = mCustomView.getDrawingCache();
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        bm.compress(Bitmap.CompressFormat.PNG, 30, stream);
+        byte[] byte_arr = stream.toByteArray();
+        // Encode Image to String
+        photo = Base64.encodeToString(byte_arr, 0);
+
+
+        View b = findViewById(R.id.SubmitButton);
+        b.setEnabled(false);
+
+        System.out.println("Submitting photo");
+
+        filename = filename + ".png";
+
+        BackgroundTask backgroundTask = new BackgroundTask(this);
+        try {
+            submitMessage = backgroundTask.execute("uploadImage", photo, filename, Integer.toString(questionID), Integer.toString(deviceID), filename).get();
+
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+
+        int status = -1;
+
+        if (submitMessage.equals("Image upload fail")) {
+            System.out.println("Nope");
+        } else {
+            try {
+                jsonObject = new JSONObject(submitMessage);
+                jsonArray = jsonObject.getJSONArray("errstatus");
+                JSONObject JO = jsonArray.getJSONObject(0);
+                status = JO.getInt("status");
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            if (status == 1) {
+                Intent intent = new Intent(this, SubmittedAnswer.class);
+                startActivity(intent);
+            }
+            if (status == 0) {
+                Toast.makeText(this, "Database error", Toast.LENGTH_LONG).show();
+            }
+            if (status == -1) {
+                Toast.makeText(this, "Something went wrong", Toast.LENGTH_LONG).show();
+            }
+
+            System.out.println(submitMessage);
+        }
+    }
+
 
     public void saveThisDrawing(){
         String path = Environment.getExternalStorageDirectory().toString();

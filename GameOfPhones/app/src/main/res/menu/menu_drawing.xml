@@ -19,6 +19,7 @@
         android:id="@+id/action_save"
         android:title="Save"
         android:icon="@drawable/ic_sd_white_36dp"
-        app:showAsAction="always" />
+        app:showAsAction="always"
+        android:visible="false"/>
 
 </menu>

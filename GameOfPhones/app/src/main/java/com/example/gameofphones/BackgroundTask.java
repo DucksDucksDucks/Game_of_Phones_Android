@@ -37,6 +37,7 @@ public class BackgroundTask extends AsyncTask<String, Void, String> {
     private String get_answers_url;
     private String submit_answer_url;
     private String answer_displayed_url;
+    private String photo_upload_url;
 
     private String nickname;
     private String teacherID;
@@ -44,6 +45,7 @@ public class BackgroundTask extends AsyncTask<String, Void, String> {
     private String questionID;
     private String result_json_string;
     private String qID, phoneID, answerID;
+    private String image, filename;
 
 
     public BackgroundTask(Context context) {
@@ -59,6 +61,7 @@ public class BackgroundTask extends AsyncTask<String, Void, String> {
         get_answers_url = "http://mcs.drury.edu/gameofphones/mobilefiles/webservice/getquestionanswers.php";
         submit_answer_url = "http://mcs.drury.edu/gameofphones/mobilefiles/webservice/sendanswer.php";
         answer_displayed_url = "http://mcs.drury.edu/gameofphones/mobilefiles/webservice/isanswerdisplayed.php";
+        photo_upload_url = "http://mcs.drury.edu/gameofphones/mobilefiles/webservice/uploadPhoto.php";
     }
 
     @Override
@@ -254,6 +257,72 @@ public class BackgroundTask extends AsyncTask<String, Void, String> {
              } catch (IOException e) {
                  e.printStackTrace();
              }
+         }
+
+         else if (method.equals("uploadImage")){
+
+             image = params[1];
+             filename = params[2];
+             qID = params[3];
+             phoneID = params[4];
+             answerID = params[5];
+
+             try {
+                 bufferedWriter = getBufferedWriter(photo_upload_url);
+                 data_string = URLEncoder.encode("image", "UTF-8") + "=" + URLEncoder.encode(image, "UTF-8") + "&" +
+                         URLEncoder.encode("filename", "UTF-8") + "=" + URLEncoder.encode(filename, "UTF-8");
+                 bufferedWriter.write(data_string);
+                 bufferedWriter.flush();
+                 bufferedWriter.close();
+                 outputStream.close();
+
+                 //check response
+                 inputStream = httpURLConnection.getInputStream();
+                 bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+                 result_json_string = readJSONToString(bufferedReader);
+
+                 bufferedReader.close();
+                 inputStream.close();
+                 httpURLConnection.disconnect();
+
+             } catch (MalformedURLException e) {
+                 e.printStackTrace();
+             } catch (IOException e) {
+                 e.printStackTrace();
+             }
+
+             if(result_json_string.equals("Image upload complete")) {
+                 try {
+                     bufferedWriter = getBufferedWriter(submit_answer_url);
+                     data_string = URLEncoder.encode("currentQID", "UTF-8") + "=" + URLEncoder.encode(qID, "UTF-8") + "&" +
+                             URLEncoder.encode("deviceID", "UTF-8") + "=" + URLEncoder.encode(phoneID, "UTF-8") + "&" +
+                             URLEncoder.encode("answer", "UTF-8") + "=" + URLEncoder.encode(answerID, "UTF-8");
+                     bufferedWriter.write(data_string);
+                     bufferedWriter.flush();
+                     bufferedWriter.close();
+                     outputStream.close();
+
+                     //check response
+                     inputStream = httpURLConnection.getInputStream();
+                     bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+                     result_json_string = readJSONToString(bufferedReader);
+
+                     bufferedReader.close();
+                     inputStream.close();
+                     httpURLConnection.disconnect();
+
+
+                     return result_json_string;
+                 } catch (MalformedURLException e) {
+                     e.printStackTrace();
+                 } catch (IOException e) {
+                     e.printStackTrace();
+                 }
+             }
+             else{
+                 return "Image upload fail";
+             }
+
          }
 
         return null;
