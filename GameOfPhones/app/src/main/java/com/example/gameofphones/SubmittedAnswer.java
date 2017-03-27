@@ -19,6 +19,7 @@ public class SubmittedAnswer extends AppCompatActivity {
     private int questionID;
     private int deviceID;
     private int displayed;
+    private boolean VERBOSE = MainActivity.VERBOSE;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +55,6 @@ public class SubmittedAnswer extends AppCompatActivity {
         a.setVisibility(View.VISIBLE);
         }
 
-
         else if(displayed==1){
             View b = findViewById(R.id.yesDisplayed);
             b.setVisibility(View.VISIBLE);
@@ -64,8 +64,39 @@ public class SubmittedAnswer extends AppCompatActivity {
 
     }
 
+    public void checkCorrect(View view){
+
+        if (DisplayQuestion.TEXT) {
+            System.out.println("Text");
+            int correctID = DisplayQuestion.question.getCorrectID();
+            int submittedID = DisplayQuestion.selectedID;
+
+            if(VERBOSE) {
+                System.out.println("correct ID is " + correctID);
+                System.out.println("submitted ID is " + submittedID);
+            }
+
+            if (correctID == 0) {
+                View b = findViewById(R.id.unsureCorrect);
+                b.setVisibility(View.VISIBLE);
+            } else if (correctID == submittedID) {
+                View b = findViewById(R.id.yesCorrect);
+                b.setVisibility(View.VISIBLE);
+            } else if (correctID != submittedID) {
+                View b = findViewById(R.id.noCorrect);
+                b.setVisibility(View.VISIBLE);
+            }
+        }
+        else{
+            View b = findViewById(R.id.unsureCorrect);
+            b.setVisibility(View.VISIBLE);
+        }
+    }
+
     public void refreshQuestion(View view){
-        Intent intent = new Intent(this, DisplayQuestion.class);
+        DisplayQuestion.TEXT=false;
+
+        Intent intent = new Intent(this, GetQuestion.class);
         startActivity(intent);
     }
 

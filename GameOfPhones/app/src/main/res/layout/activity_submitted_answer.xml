@@ -28,7 +28,6 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentStart="true" />
 
-
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -45,18 +44,54 @@
         android:text="No, your answer is not currently being displayed"
         android:id="@+id/noDisplayed" />
 
+
+    <Button
+        android:text="check if submitted answer was correct"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="100dp"
+        android:id="@+id/rightButton"
+        android:layout_below="@+id/button2"
+        style="@style/Widget.AppCompat.Button.Colored"
+        android:onClick="checkCorrect"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/rightButton"
+        android:text="Your answer was incorrect"
+        android:visibility="gone"
+        android:id="@+id/noCorrect" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/rightButton"
+        android:visibility="gone"
+        android:text="Your answer was correct!"
+        android:id="@+id/yesCorrect" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/rightButton"
+        android:visibility="gone"
+        android:text="Question has no correct answer set."
+        android:id="@+id/unsureCorrect" />
+
+
     <Button
         android:text="Answer a new question"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/button2"
+        android:layout_below="@+id/rightButton"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="100dp"
         android:id="@+id/button4"
         style="@style/Widget.AppCompat.Button.Colored"
         android:onClick="refreshQuestion"/>
-
-
 
 
 </RelativeLayout>

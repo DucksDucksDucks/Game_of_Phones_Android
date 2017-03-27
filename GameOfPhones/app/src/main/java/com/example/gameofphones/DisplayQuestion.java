@@ -31,7 +31,7 @@ public class DisplayQuestion extends AppCompatActivity {
     private String questionType;
     private int correctID;
     private int answerIDs[] = new int[4];
-    private int selectedID;
+    public static int selectedID;
     private int deviceID;
     private int teacherID;
     private String imageName;
@@ -41,11 +41,14 @@ public class DisplayQuestion extends AppCompatActivity {
     private boolean VERBOSE = MainActivity.VERBOSE;
 
     public static Question question;
+    public static boolean TEXT = false;
 
     private String images_url = "http://mcs.drury.edu/gameofphones/mobilefiles/images/";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        TEXT = true;
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_display_question);
@@ -189,7 +192,7 @@ public class DisplayQuestion extends AppCompatActivity {
             Toast.makeText(this, "Database error", Toast.LENGTH_LONG).show();
         }
         if(status == -1){
-            Toast.makeText(this, "Something went wrong", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Something went wrong. Have you already submitted an answer to this question?", Toast.LENGTH_LONG).show();
         }
     }
 
@@ -245,7 +248,7 @@ public class DisplayQuestion extends AppCompatActivity {
                 Toast.makeText(this, "Database error", Toast.LENGTH_LONG).show();
             }
             if (status == -1) {
-                Toast.makeText(this, "Something went wrong", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "Something went wrong. Have you already submitted an answer to this question?", Toast.LENGTH_LONG).show();
             }
 
         }

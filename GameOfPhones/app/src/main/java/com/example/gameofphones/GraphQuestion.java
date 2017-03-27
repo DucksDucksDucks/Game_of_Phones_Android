@@ -34,6 +34,7 @@ public class GraphQuestion extends AppCompatActivity {
 
     private boolean VERBOSE = MainActivity.VERBOSE;
     private boolean DEBUG = MainActivity.DEBUG;
+    public static boolean GRAPH = false;
     private String nickname = MainActivity.nickname;
 
     private Toolbar mToolbar_bottom;
@@ -61,6 +62,9 @@ public class GraphQuestion extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        /**
+         * permissions for saving drawing to device gallery. In order to use this,
+         * the min API needs to be 23
 
         if(checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
             requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
@@ -68,6 +72,9 @@ public class GraphQuestion extends AppCompatActivity {
         if(checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
             requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE);
         }
+         **/
+
+        GRAPH = true;
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_graph_question);
@@ -96,26 +103,19 @@ public class GraphQuestion extends AppCompatActivity {
         }
 
         question = new Question();
-
         question.setMessage(teacherID, this);
 
         questionID = question.getQID();
         questionString = question.getQuestionText();
-        questionType = question.getQuestionType();
-        correctID = question.getCorrectID();
         imageName = question.getImageName();
 
         if(VERBOSE) {
             System.out.println("ID = " + questionID);
             System.out.println("Text = " + questionString);
-            System.out.println("Type = " + questionType);
-            System.out.println("Correct = " + correctID);
             System.out.println("Image = " + imageName);
         }
-
         TextView textField = (TextView) findViewById(R.id.textView);
         textField.setText(questionString);
-
     }
 
     private void handleDrawingIconTouched(int itemId){
@@ -126,34 +126,16 @@ public class GraphQuestion extends AppCompatActivity {
             case R.id.action_redo:
                 mCustomView.onClickRedo();
                 break;
-            case R.id.action_save:
-                System.out.println("Save Drawing");
-                saveDrawingDialog();
-                break;
+            //case R.id.action_save:
+            //    System.out.println("Save Drawing");
+            //    saveDrawingDialog();
+            //    break;
         }
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item){
         return super.onOptionsItemSelected(item);
-    }
-
-
-    public void saveDrawingDialog(){
-        AlertDialog.Builder saveDialog = new AlertDialog.Builder(this);
-        saveDialog.setTitle("Save drawing");
-        saveDialog.setMessage("Save drawing to device Gallery?");
-        saveDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                saveThisDrawing();
-            }
-        });
-        saveDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener(){
-            public void onClick(DialogInterface dialog, int which){
-                dialog.cancel();
-            }
-        });
-        saveDialog.show();
     }
 
     public void submitGraphDialogue(View view){
@@ -174,7 +156,6 @@ public class GraphQuestion extends AppCompatActivity {
     }
 
     public void submitGraph() {
-
         if (DEBUG) {
             nickname = "nickname";
         }
@@ -188,18 +169,14 @@ public class GraphQuestion extends AppCompatActivity {
         // Encode Image to String
         photo = Base64.encodeToString(byte_arr, 0);
 
-
         View b = findViewById(R.id.SubmitButton);
         b.setEnabled(false);
 
         System.out.println("Submitting photo");
 
-        filename = filename + ".png";
-
         BackgroundTask backgroundTask = new BackgroundTask(this);
         try {
-            submitMessage = backgroundTask.execute("uploadImage", photo, filename, Integer.toString(questionID), Integer.toString(deviceID), filename).get();
-
+            submitMessage = backgroundTask.execute("uploadImage", photo, filename, Integer.toString(questionID), Integer.toString(deviceID), (filename + ".png")).get();
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
@@ -219,7 +196,6 @@ public class GraphQuestion extends AppCompatActivity {
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-
             if (status == 1) {
                 Intent intent = new Intent(this, SubmittedAnswer.class);
                 startActivity(intent);
@@ -228,11 +204,34 @@ public class GraphQuestion extends AppCompatActivity {
                 Toast.makeText(this, "Database error", Toast.LENGTH_LONG).show();
             }
             if (status == -1) {
-                Toast.makeText(this, "Something went wrong", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "Something went wrong. Have you already submitted an answer to this question?", Toast.LENGTH_LONG).show();
             }
-
             System.out.println(submitMessage);
         }
+    }
+
+
+
+
+
+/**
+ * Code for saving the drawing to the phone's gallery
+
+    public void saveDrawingDialog(){
+        AlertDialog.Builder saveDialog = new AlertDialog.Builder(this);
+        saveDialog.setTitle("Save drawing");
+        saveDialog.setMessage("Save drawing to device Gallery?");
+        saveDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                saveThisDrawing();
+            }
+        });
+        saveDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener(){
+            public void onClick(DialogInterface dialog, int which){
+                dialog.cancel();
+            }
+        });
+        saveDialog.show();
     }
 
 
@@ -281,5 +280,6 @@ public class GraphQuestion extends AppCompatActivity {
 
         mCustomView.destroyDrawingCache();
     }
+ **/
 
 }
