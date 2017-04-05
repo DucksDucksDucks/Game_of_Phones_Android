@@ -85,44 +85,46 @@ public class DisplayQuestion extends AppCompatActivity {
         TextView textField = (TextView) findViewById(R.id.questionBox);
         textField.setText(questionString);
 
+        if(questionID > 0) {
+            if (questionType.equals("mult")) {
 
-        if(questionType.equals("mult")) {
+                BackgroundTask backgroundTask2 = new BackgroundTask(this);
+                try {
+                    answerMessage = backgroundTask2.execute("getAnswers", Integer.toString(questionID)).get();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
+                }
 
-            BackgroundTask backgroundTask2 = new BackgroundTask(this);
-            try {
-                answerMessage = backgroundTask2.execute("getAnswers", Integer.toString(questionID)).get();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            } catch (ExecutionException e) {
-                e.printStackTrace();
+                setAnswersMult(answerMessage);
+
+            } else if (questionType.equals("tf")) {
+                setAnswersTF();
+            } else if (questionType.equals("sa")) {
+                setAnswersSA();
+            } else if (questionType.equals("draw")) {
+                Intent intent = new Intent(this, GraphQuestion.class);
+                startActivity(intent);
             }
 
-            setAnswersMult(answerMessage);
-
+            if (!imageName.equals("null")) {
+                String imageUrl = images_url + imageName;
+                System.out.println(imageUrl);
+                ImageView imageView = (ImageView) findViewById(R.id.qImage);
+                Picasso.with(this)
+                        .load(imageUrl)
+                        .into(imageView);
+            } else {
+                if (VERBOSE) {
+                    System.out.println("image null");
+                }
+            }
         }
-        else if(questionType.equals("tf")){
-            setAnswersTF();
-        }
-        else if(questionType.equals("sa")){
-            setAnswersSA();
-        }
-        else if(questionType.equals("draw")){
-            Intent intent = new Intent(this, GraphQuestion.class);
-            startActivity(intent);
-        }
-
-        if(!imageName.equals("null")){
-            String imageUrl = images_url + imageName;
-            System.out.println(imageUrl);
-            ImageView imageView = (ImageView) findViewById(R.id.qImage);
-            Picasso.with(this)
-                .load(imageUrl)
-                .into(imageView); }
-
         else{
-            if(VERBOSE){
-             System.out.println("image null");
-            }
+            Toast.makeText(this, "I don't recognize that question ID", Toast.LENGTH_LONG).show();
+            View b = findViewById(R.id.errorMessage);
+            b.setVisibility(View.VISIBLE);
         }
     }
 
