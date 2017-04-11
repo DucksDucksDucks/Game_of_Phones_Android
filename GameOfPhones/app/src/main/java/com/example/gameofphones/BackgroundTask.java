@@ -196,12 +196,14 @@ public class BackgroundTask extends AsyncTask<String, Void, String> {
          else if (method.equals("submitAnswer")) {
 
              qID = params[1];
-             phoneID = params[2];
-             answerID = params[3];
+             teacherID = params[2];
+             phoneID = params[3];
+             answerID = params[4];
 
              try {
                  bufferedWriter = getBufferedWriter(submit_answer_url);
                  data_string = URLEncoder.encode("currentQID", "UTF-8") + "=" + URLEncoder.encode(qID, "UTF-8") + "&" +
+                         URLEncoder.encode("teacherID", "UTF-8") + "=" + URLEncoder.encode(teacherID, "UTF-8") + "&" +
                          URLEncoder.encode("deviceID", "UTF-8") + "=" + URLEncoder.encode(phoneID, "UTF-8") + "&" +
                          URLEncoder.encode("answer", "UTF-8") + "=" + URLEncoder.encode(answerID, "UTF-8");
                  bufferedWriter.write(data_string);
@@ -265,7 +267,8 @@ public class BackgroundTask extends AsyncTask<String, Void, String> {
              filename = params[2];
              qID = params[3];
              phoneID = params[4];
-             answerID = params[5];
+             teacherID = params[5];
+             answerID = params[6];
 
              try {
                  bufferedWriter = getBufferedWriter(photo_upload_url);
@@ -291,10 +294,13 @@ public class BackgroundTask extends AsyncTask<String, Void, String> {
                  e.printStackTrace();
              }
 
+             System.out.println(result_json_string);
+
              if(result_json_string.equals("Image upload complete")) {
                  try {
                      bufferedWriter = getBufferedWriter(submit_answer_url);
                      data_string = URLEncoder.encode("currentQID", "UTF-8") + "=" + URLEncoder.encode(qID, "UTF-8") + "&" +
+                             URLEncoder.encode("teacherID", "UTF-8") + "=" + URLEncoder.encode(teacherID, "UTF-8") + "&" +
                              URLEncoder.encode("deviceID", "UTF-8") + "=" + URLEncoder.encode(phoneID, "UTF-8") + "&" +
                              URLEncoder.encode("answer", "UTF-8") + "=" + URLEncoder.encode(answerID, "UTF-8");
                      bufferedWriter.write(data_string);

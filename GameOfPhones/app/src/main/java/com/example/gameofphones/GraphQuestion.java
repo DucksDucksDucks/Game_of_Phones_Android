@@ -176,7 +176,7 @@ public class GraphQuestion extends AppCompatActivity {
 
         BackgroundTask backgroundTask = new BackgroundTask(this);
         try {
-            submitMessage = backgroundTask.execute("uploadImage", photo, filename, Integer.toString(questionID), Integer.toString(deviceID), (filename + ".png")).get();
+            submitMessage = backgroundTask.execute("uploadImage", photo, filename, Integer.toString(questionID), Integer.toString(deviceID), Integer.toString(teacherID), (filename + ".png")).get();
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {

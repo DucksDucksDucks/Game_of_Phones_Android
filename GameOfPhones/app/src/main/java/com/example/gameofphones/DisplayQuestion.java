@@ -172,7 +172,7 @@ public class DisplayQuestion extends AppCompatActivity {
 
         BackgroundTask backgroundTask = new BackgroundTask(this);
         try {
-            submitMessage = backgroundTask.execute("submitAnswer", Integer.toString(questionID),Integer.toString(deviceID),Integer.toString(selectedID)).get();
+            submitMessage = backgroundTask.execute("submitAnswer", Integer.toString(questionID), Integer.toString(teacherID), Integer.toString(deviceID),Integer.toString(selectedID)).get();
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
@@ -227,7 +227,7 @@ public class DisplayQuestion extends AppCompatActivity {
 
             BackgroundTask backgroundTask = new BackgroundTask(this);
             try {
-                submitMessage = backgroundTask.execute("submitAnswer", Integer.toString(questionID), Integer.toString(deviceID), answerText).get();
+                submitMessage = backgroundTask.execute("submitAnswer", Integer.toString(questionID), Integer.toString(teacherID), Integer.toString(deviceID), answerText).get();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             } catch (ExecutionException e) {
