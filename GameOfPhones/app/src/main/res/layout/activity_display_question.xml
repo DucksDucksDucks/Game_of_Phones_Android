@@ -1,4 +1,8 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+<LinearLayout
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
@@ -92,6 +96,42 @@
         android:id="@+id/answer4"
         android:onClick="fourthAnswer"
         android:visibility="gone"/>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/imgAnswer5"
+            android:layout_marginLeft="100px"/>
+        <RadioButton
+            android:text=""
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/answer5"
+            android:onClick="fifthAnswer"
+            android:visibility="gone"/>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/imgAnswer6"
+            android:layout_marginLeft="100px"/>
+        <RadioButton
+            android:text=""
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/answer6"
+            android:onClick="sixthAnswer"
+            android:visibility="gone"/>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/imgAnswer7"
+            android:layout_marginLeft="100px"/>
+        <RadioButton
+            android:text=""
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/answer7"
+            android:onClick="seventhAnswer"
+            android:visibility="gone"/>
 </RadioGroup>
 
 
@@ -136,5 +176,5 @@
         android:layout_gravity="bottom"/>
 
     </FrameLayout>
-
-</LinearLayout>
+   </LinearLayout>
+    </ScrollView>

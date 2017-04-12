@@ -30,7 +30,7 @@ public class DisplayQuestion extends AppCompatActivity {
     private String questionString;
     private String questionType;
     private int correctID;
-    private int answerIDs[] = new int[4];
+    private int answerIDs[] = new int[7];
     public static int selectedID;
     private int deviceID;
     private int teacherID;
@@ -157,6 +157,30 @@ public class DisplayQuestion extends AppCompatActivity {
         selectedID = answerIDs[3];
         if(VERBOSE){
         Toast.makeText(this, "you selected " + selectedID, Toast.LENGTH_LONG).show();}
+        View b = findViewById(R.id.submitButton);
+        b.setVisibility(View.VISIBLE);
+    }
+
+    public void fifthAnswer(View view){
+        selectedID = answerIDs[4];
+        if(VERBOSE){
+            Toast.makeText(this, "you selected " + selectedID, Toast.LENGTH_LONG).show();}
+        View b = findViewById(R.id.submitButton);
+        b.setVisibility(View.VISIBLE);
+    }
+
+    public void sixthAnswer(View view){
+        selectedID = answerIDs[5];
+        if(VERBOSE){
+            Toast.makeText(this, "you selected " + selectedID, Toast.LENGTH_LONG).show();}
+        View b = findViewById(R.id.submitButton);
+        b.setVisibility(View.VISIBLE);
+    }
+
+    public void seventhAnswer(View view){
+        selectedID = answerIDs[6];
+        if(VERBOSE){
+            Toast.makeText(this, "you selected " + selectedID, Toast.LENGTH_LONG).show();}
         View b = findViewById(R.id.submitButton);
         b.setVisibility(View.VISIBLE);
     }
@@ -314,6 +338,24 @@ public class DisplayQuestion extends AppCompatActivity {
                 textField = (TextView) findViewById(R.id.answer4);
                 b = findViewById(R.id.answer4);
                 imageView = (ImageView) findViewById(R.id.imgAnswer4);
+            }
+
+            if(i==4){
+                textField = (TextView) findViewById(R.id.answer5);
+                b = findViewById(R.id.answer5);
+                imageView = (ImageView) findViewById(R.id.imgAnswer5);
+            }
+
+            if(i==5){
+                textField = (TextView) findViewById(R.id.answer6);
+                b = findViewById(R.id.answer6);
+                imageView = (ImageView) findViewById(R.id.imgAnswer6);
+            }
+
+            if(i==6){
+                textField = (TextView) findViewById(R.id.answer7);
+                b = findViewById(R.id.answer7);
+                imageView = (ImageView) findViewById(R.id.imgAnswer7);
             }
 
             textField.setText(answerText);
